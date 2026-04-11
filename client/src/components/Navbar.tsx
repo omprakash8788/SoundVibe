@@ -29,9 +29,15 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center gap-2 mt-4">
-        <p className="bg-white text-black text-sm px-4 py-1.5 rounded-2xl md:block cursor-pointer">All</p>
-        <p className="bg-black py-1.5 px-3 rounded-2xl text-sm cursor-pointer">Music</p>
-        <p className="bg-black py-1.5 px-3 rounded-2xl text-sm cursor-pointer">Podcasts</p>
+        <p className="bg-white text-black text-sm px-4 py-1.5 rounded-2xl md:block cursor-pointer">
+          All
+        </p>
+        <p className="bg-black py-1.5 px-3 rounded-2xl text-sm cursor-pointer">
+          Music
+        </p>
+        <p className="bg-black py-1.5 px-3 rounded-2xl text-sm cursor-pointer">
+          Podcasts
+        </p>
       </div>
     </>
   );
