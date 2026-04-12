@@ -5,11 +5,16 @@ const Sidebar = () => {
     <div className="text-white w-[25%] p-2 gap-2 h-full flex-col hidden lg:flex">
       <div className="bg-[#121212] h-[15%] rounded flex flex-col justify-around">
         <div className="flex items-center gap-3 pl-8 cursor-pointer">
-          <img className="w-6" src={assets.home_icon} alt="search icon" />
+          <div className="p-2 rounded-full hover:bg-gray-500">
+            <img className="w-6 h-6" src={assets.home_icon} alt="home icon" />
+          </div>
           <p className="font-bold">Home</p>
         </div>
         <div className="flex items-center gap-3 pl-8 cursor-pointer">
-          <img className="w-6" src={assets.search_icon} alt="search icon" />
+          <div className="p-2 rounded-full hover:bg-gray-500">
+            <img className="w-6" src={assets.search_icon} alt="search icon" />
+          </div>
+
           <p className="font-bold">Search</p>
         </div>
       </div>
@@ -30,14 +35,14 @@ const Sidebar = () => {
         <div className="p-4 bg-[#242424] m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 pl-4">
           <h1>Create Your First Playlist</h1>
           <p className="font-light">It’s easy, we’ll help you</p>
-          <button className="px-4 py-1.5 bg-white text-sm text-black rounded-full mt-4 font-bold">
+          <button className="px-4 py-1.5 bg-white text-sm text-black rounded-full mt-4 font-bold cursor-pointer transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
             Create Playlist
           </button>
         </div>
         <div className="p-4 bg-[#242424] m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 pl-4">
           <h1>Let's find some poadcast to follow</h1>
           <p className="font-light">We will keep you update on new episodes</p>
-          <button className="px-4 py-1.5 bg-white text-sm text-black rounded-full mt-4 font-bold">
+          <button className="px-4 py-1.5 bg-white text-sm text-black rounded-full mt-4 font-bold cursor-pointer transition-all duration-300 ease-in-out hover:bg-black hover:text-white">
             Browse poadcast
           </button>
         </div>
