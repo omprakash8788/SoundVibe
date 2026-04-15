@@ -7,7 +7,7 @@ const PlayerContextProvider = (props) => {
   const seekBg = useRef(null);
   const seekBar = useRef(null);
 
-  const [track, setTrack] = useState(songsData[0]); //
+  const [track, setTrack] = useState(songsData[0]);
   const [playStatus, setPlayStatus] = useState(false);
   const [time, setTime] = useState({
     currentTime: {
@@ -93,7 +93,7 @@ const PlayerContextProvider = (props) => {
     playWithId,
     previous,
     next,
-    seekSong
+    seekSong,
   };
 
   return (
