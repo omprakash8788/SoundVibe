@@ -1,4 +1,4 @@
-#  Backend Service – Production-Ready Boilerplate
+#  Backend Service
 
 A scalable, production-grade backend architecture built with clean separation of concerns. This structure is designed for maintainability, extensibility, and team collaboration.
 
