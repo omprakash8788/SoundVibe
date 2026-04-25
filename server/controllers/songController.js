@@ -14,7 +14,6 @@ const addSong = async (req, res) => {
     const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
       resource_type: "image",
     });
-    // console.log(name, desc, album, audioUpload, imageUpload);
     const duration = `${Math.floor(audioUpload.duration / 60)} : ${Math.floor(audioUpload.duration % 60)}`;
     const songData = {
       name,
@@ -24,14 +23,21 @@ const addSong = async (req, res) => {
       file: audioUpload.secure_url,
       duration,
     };
-    const song=songModel(songData);
+    const song = songModel(songData);
     await song.save();
-    res.json({success:true, message:"Song added"})
+    res.json({ success: true, message: "Song added" });
   } catch (error) {
     console.log(error);
   }
 };
 
-const listSong = async (req, res) => {};
+const listSong = async (req, res) => {
+  try {
+    const allSongs = await songModel.find({});
+    res.json({ success: true, songs: allSongs });
+  } catch (error) {
+    res.json({ success: false });
+  }
+};
 
 export { addSong, listSong };
