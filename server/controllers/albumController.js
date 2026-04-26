@@ -3,6 +3,7 @@ import albumModel from "../models/albumModel.js";
 
 const addAlbum = async (req, res) => {
   try {
+     
   } catch (error) {}
 };
 
