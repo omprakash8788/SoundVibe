@@ -1,8 +1,10 @@
 
 const AddAlbum = () => {
   return (
-    <div>AddAlbum</div>
-  )
-}
+  <div>
+    hi
+  </div>
+  );
+};
 
-export default AddAlbum
+export default AddAlbum;
