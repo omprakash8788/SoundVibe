@@ -1,20 +1,65 @@
+import { useState } from "react";
 import { assets } from "../assets/assets";
+import Spiner from "../components/Spiner";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { url } from "../App";
 
 const AddAlbum = () => {
-  return (
+  const [image, setImage] = useState(false);
+  const [colour, setColour] = useState("#121212");
+  const [name, setName] = useState("");
+  const [desc, setDesc] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("desc", desc);
+      formData.append("image", image);
+      formData.append("bgColour", colour);
+
+      const response = await axios.post(`${url}/api/album/add`, formData);
+      if (response.data.success) {
+        toast.success("Album added");
+        setName("");
+        setDesc("");
+        setImage(false);
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      toast.error("Error occured");
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  return loading ? (
+    <Spiner />
+  ) : (
     <form
-      // onSubmit={onSubmitHandler}
+      onSubmit={onSubmitHandler}
       className="flex flex-col items-start gap-8 text-gray-600"
     >
       <div className="flex gap-8">
         <div className="flex flex-col gap-4">
           <p>Upload Image</p>
-          <input type="file" id="image" accept="image/*" hidden />
+          <input
+            onChange={(e) => setImage(e.target.files[0])}
+            type="file"
+            id="image"
+            accept="image/*"
+            hidden
+          />
           <label htmlFor="image">
             <img
               className="w-24 cursor-pointer"
-              src={assets.upload_area}
-              alt="us"
+              src={image ? URL.createObjectURL(image) : assets.upload_area}
+              alt="image"
             />
           </label>
         </div>
@@ -23,6 +68,8 @@ const AddAlbum = () => {
       <div className="flex flex-col gap-2.5">
         <p>Album Name</p>
         <input
+          onChange={(e) => setName(e.target.value)}
+          value={name}
           className="bg-transparent outline-green-600 border-2 border-gray-400 p-2 w-100"
           type="text"
           placeholder="Type here"
@@ -33,6 +80,8 @@ const AddAlbum = () => {
       <div className="flex flex-col gap-2.5">
         <p>Album Description</p>
         <input
+          onChange={(e) => setDesc(e.target.value)}
+          value={desc}
           className="bg-transparent outline-green-600 border-2 border-gray-400 p-2 w-100"
           type="text"
           placeholder="Type here"
@@ -42,7 +91,11 @@ const AddAlbum = () => {
 
       <div className="flex flex-col gap-2.5">
         <p>Background Colour</p>
-        <input type="color" />
+        <input
+          onChange={(e) => setColour(e.target.value)}
+          value={colour}
+          type="color"
+        />
       </div>
       <button
         type="submit"

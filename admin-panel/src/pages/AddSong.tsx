@@ -3,6 +3,7 @@ import { assets } from "../assets/assets";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { url } from "../App";
+import Spiner from "../components/Spiner";
 
 const AddSong = () => {
   const [image, setImage] = useState(false);
@@ -45,9 +46,7 @@ const AddSong = () => {
   };
 
   return loading ? (
-    <div className="grid place-items-center min-h-[80vh]">
-      <div className="w-10 h-10 place-self-center border-4 border-gray-400 border-t-green-800 rounded-full animate-spin"></div>
-    </div>
+   <Spiner/>
   ) : (
     <form
       onSubmit={onSubmitHandler}
