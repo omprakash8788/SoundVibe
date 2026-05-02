@@ -6,13 +6,13 @@ import { url } from "../App";
 const ListSong = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
     const fetchSong = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`${url}/api/song/list`);
-        // console.log(response.data)
         if (response.data.success) {
           setData(response.data.songs);
         }
@@ -22,9 +22,21 @@ const ListSong = () => {
       }
       setLoading(false);
     };
-
     fetchSong();
-  }, []);
+  }, [isDeleted]);
+
+  const removeSong = async (id) => {
+    try {
+      const response = await axios.post(`${url}/api/song/remove`, { id });
+      if (response.data.success) {
+        setIsDeleted(true);
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Error occured while deleting");
+      console.log(error);
+    }
+  };
 
   return loading ? (
     <div className="grid place-items-center min-h-[80vh]">
@@ -42,19 +54,25 @@ const ListSong = () => {
           <b>Duration</b>
           <b>Action</b>
         </div>
-        {
-            data.map((item, index)=>{
-                return(
-                    <div key={index} className="sm:grid hidden grid-cols-[0.5fr_1fr_2fr_1fr_0.5fr] items-center gap-2.5 border border-gray-300 text-sm mr-5 bg-gray-100 p-3">
-                     <img className="w-12" src={item.image} alt="img" />
-                     <p>{item.name}</p>
-                     <p>{item.album}</p>
-                     <p>{item.duration}</p>
-                     <p>X</p>
-                    </div>
-                )
-            })
-        }
+        {data.map((item, index) => {
+          return (
+            <div
+              key={index}
+              className="sm:grid hidden grid-cols-[0.5fr_1fr_2fr_1fr_0.5fr] items-center gap-2.5 border border-gray-300 text-sm mr-5 bg-gray-100 p-3"
+            >
+              <img className="w-12" src={item.image} alt="img" />
+              <p>{item.name}</p>
+              <p>{item.album}</p>
+              <p>{item.duration}</p>
+              <p
+                className="cursor-pointer"
+                onClick={() => removeSong(item._id)}
+              >
+                X
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
