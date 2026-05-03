@@ -1,42 +1,28 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { url } from "../App";
+import { deleteSong, fetchSongs } from "../features/song/songSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 
 const ListSong = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
-
+  const dispatch = useAppDispatch();
+  const { data, loading, error } = useAppSelector((state) => state.song);
+  
   useEffect(() => {
-    const fetchSong = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${url}/api/song/list`);
-        if (response.data.success) {
-          setData(response.data.songs);
-        }
-      } catch (error) {
-        toast.error("Error occured");
-        console.log(error);
-      }
-      setLoading(false);
-    };
-    fetchSong();
-  }, [isDeleted]);
+    dispatch(fetchSongs());
+  }, [dispatch]);
 
-  const removeSong = async (id) => {
-    try {
-      const response = await axios.post(`${url}/api/song/remove`, { id });
-      if (response.data.success) {
-        setIsDeleted(true);
-        toast.success(response.data.message);
-      }
-    } catch (error) {
-      toast.error("Error occured while deleting");
-      console.log(error);
-    }
+  const handleDelete = (id) => {
+    dispatch(deleteSong(id));
+    toast.success("Song deleted");
   };
+
+  if (error) {
+    return (
+      <div className="grid place-items-center min-h-[80vh]">
+        <p className="text-red-500">Error: {error}</p>
+      </div>
+    );
+  }
 
   return loading ? (
     <div className="grid place-items-center min-h-[80vh]">
@@ -54,7 +40,7 @@ const ListSong = () => {
           <b>Duration</b>
           <b>Action</b>
         </div>
-        {data.map((item, index) => {
+        {data?.map((item, index) => {
           return (
             <div
               key={index}
@@ -66,7 +52,7 @@ const ListSong = () => {
               <p>{item.duration}</p>
               <p
                 className="cursor-pointer"
-                onClick={() => removeSong(item._id)}
+                onClick={() => handleDelete(item._id)}
               >
                 X
               </p>
