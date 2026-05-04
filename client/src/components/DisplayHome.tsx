@@ -1,4 +1,3 @@
-// import { albumsData, songsData } from "../assets/assets";
 import { useContext } from "react";
 import AlbumItem from "./AlbumItem";
 import Navbar from "./Navbar";
