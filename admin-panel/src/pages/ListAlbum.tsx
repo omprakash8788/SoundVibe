@@ -1,44 +1,29 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { url } from "../App";
 import Spiner from "../components/Spiner";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { deleteAlbum, fetchAlbum } from "../features/album/albumSlice";
 
 const ListAlbum = () => {
-  const [data, setData] = useState([]);
-  // console.log(data);
-  const [refresh, setRefresh] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const { data, error, loading } = useAppSelector((state) => state.album);
 
   useEffect(() => {
-    const fetchAlbums = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${url}/api/album/list`);
-        if (response.data.success) {
-          setData(response.data.albums);
-        }
-      } catch (error) {
-        toast.error("Error occured");
-        console.log(error);
-      }
-      setLoading(false);
-    };
-    fetchAlbums();
-  }, [refresh]);
+    dispatch(fetchAlbum())
+  },[dispatch]);
 
-  const removeAlbum = async (id) => {
-    try {
-      const response = await axios.post(`${url}/api/album/remove`, { id });
-      if (response.data.success) {
-        setRefresh(true);
-        toast.success(response.data.message);
-      }
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.log(error);
-    }
+  const handleDelete = (id) => {
+    dispatch(deleteAlbum(id));
+    toast.success("Album deleted");
   };
+
+  if (error) {
+    return (
+      <div className="grid place-items-center min-h-[80vh]">
+        <p className="text-red-500">Error: {error}</p>
+      </div>
+    );
+  }
 
   return loading ? (
     <Spiner />
@@ -54,7 +39,7 @@ const ListAlbum = () => {
           <b>Album colour</b>
           <b>Action</b>
         </div>
-        {data.map((item, index) => {
+        {data?.map((item, index) => {
           return (
             <div
               key={index}
@@ -66,7 +51,7 @@ const ListAlbum = () => {
               <input type="color" value={item.bgColour} readOnly />
               <p
                 className="cursor-pointer"
-                onClick={() => removeAlbum(item._id)}
+                onClick={() => handleDelete(item._id)}
               >
                 X
               </p>
