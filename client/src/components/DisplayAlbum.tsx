@@ -1,23 +1,33 @@
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
-import { albumsData, assets, songsData } from "../assets/assets";
+import { assets } from "../assets/assets";
 import { useContext, useEffect, useState } from "react";
 import { PlayerContext } from "../context/PlayerContext";
 
-const DisplayAlbum = () => {
+type Album = {
+  _id: string;
+  name: string;
+  desc: string;
+  image: string;
+  bgColour: string;
+};
+
+type DisplayAlbumProps = {
+  album: Album | undefined;
+};
+
+const DisplayAlbum: React.FC<DisplayAlbumProps> = () => {
   const { id } = useParams();
-  const [albumData, setAlbumData]=useState("");
+  const [albumData, setAlbumData] = useState<Album | null>(null);
+  const { playWithId, albumsData, songsData } = useContext(PlayerContext);
 
-  // const AlbumData = albumsData[id];
-  const {playWithId, albumsData, songsData}=useContext(PlayerContext)
-
-  useEffect(()=>{
-    albumsData.map((item)=>{
-      if(item._id===id){
-        setAlbumData(item)
+  useEffect(() => {
+    albumsData.map((item) => {
+      if (item._id === id) {
+        setAlbumData(item);
       }
-    })
-  },[])
+    });
+  }, []);
 
   return albumData ? (
     <>
@@ -53,7 +63,7 @@ const DisplayAlbum = () => {
       {songsData.map((item, index) => (
         <div
           key={index}
-          onClick={()=>playWithId(item._id)}
+          onClick={() => playWithId(item._id)}
           className="grid grid-cols-3 sm:grid-cols-4 gap-2 items-center p-2 text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer"
         >
           <p className="text-white">
@@ -66,7 +76,7 @@ const DisplayAlbum = () => {
         </div>
       ))}
     </>
-  ) :null;
+  ) : null;
 };
 
 export default DisplayAlbum;

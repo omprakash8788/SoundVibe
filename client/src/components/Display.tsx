@@ -2,7 +2,6 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import DisplayHome from "./DisplayHome";
 import DisplayAlbum from "./DisplayAlbum";
 import { useContext, useEffect, useRef } from "react";
-// import { albumsData } from "../assets/assets";
 import { PlayerContext } from "../context/PlayerContext";
 
 const Display = () => {
