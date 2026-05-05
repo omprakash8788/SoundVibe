@@ -28,7 +28,7 @@ const DisplayAlbum: React.FC<DisplayAlbumProps> = () => {
       }
     });
   }, []);
-
+  
   return albumData ? (
     <>
       <Navbar />
