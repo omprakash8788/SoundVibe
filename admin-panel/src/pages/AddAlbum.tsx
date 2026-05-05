@@ -4,9 +4,10 @@ import Spiner from "../components/Spiner";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { url } from "../App";
+import FormInput from "../components/FormInput";
 
 const AddAlbum = () => {
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
   const [colour, setColour] = useState("#121212");
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -22,12 +23,12 @@ const AddAlbum = () => {
       formData.append("image", image);
       formData.append("bgColour", colour);
 
-      const response = await axios.post(`${url}/api/album/add`,formData);
+      const response = await axios.post(`${url}/api/album/add`, formData);
       if (response.data.success) {
         toast.success("Album added");
         setName("");
         setDesc("");
-        setImage(false);
+        setImage(null);
       } else {
         toast.error("Something went wrong");
       }
@@ -64,39 +65,30 @@ const AddAlbum = () => {
           </label>
         </div>
       </div>
-      {/*  */}
-      <div className="flex flex-col gap-2.5">
-        <p>Album Name</p>
-        <input
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          className="bg-transparent outline-green-600 border-2 border-gray-400 p-2 w-100"
-          type="text"
-          placeholder="Type here"
-          required
-        />
-      </div>
-
-      <div className="flex flex-col gap-2.5">
-        <p>Album Description</p>
-        <input
-          onChange={(e) => setDesc(e.target.value)}
-          value={desc}
-          className="bg-transparent outline-green-600 border-2 border-gray-400 p-2 w-100"
-          type="text"
-          placeholder="Type here"
-          required
-        />
-      </div>
-
-      <div className="flex flex-col gap-2.5">
-        <p>Background Colour</p>
-        <input
-          onChange={(e) => setColour(e.target.value)}
-          value={colour}
-          type="color"
-        />
-      </div>
+      <FormInput
+        label={"Album Name"}
+        name="name"
+        value={name}
+        type="text"
+        placeholder="Type here"
+        onChange={(e) => setName(e.target.value)}
+      />
+      <FormInput
+        label={"Album Description"}
+        name="desc"
+        value={desc}
+        type="text"
+        placeholder="Type here"
+        onChange={(e) => setDesc(e.target.value)}
+      />
+      <FormInput
+        label={"Background Colour"}
+        name="color"
+        value={colour}
+        type="color"
+        placeholder={""}
+        onChange={(e) => setColour(e.target.value)}
+      />
       <button
         type="submit"
         className="text-base mb-5 bg-black text-white py-2.5 px-14 cursor-pointer"
