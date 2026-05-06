@@ -11,6 +11,21 @@ export const fetchSongs = createAsyncThunk(
     }
 );
 
+export const deleteSong = createAsyncThunk(
+    "song/deleteSong",
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${url}/api/song/remove`, { id });
+            return { id, message: response.data.message };
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Something went wrong"
+            );
+        }
+
+    }
+);
+
 
 // STEP 6.2: Create Slice
 const songSlice = createSlice({
@@ -41,17 +56,11 @@ const songSlice = createSlice({
                     (song) => song._id !== action.payload.id
                 );
             })
+            .addCase(deleteSong.rejected, (state, action) => {
+                state.error = action.payload;
+            })
 
     },
 });
-
-
-export const deleteSong = createAsyncThunk(
-    "song/deleteSong",
-    async (id) => {
-        const response = await axios.post(`${url}/api/song/remove`, { id });
-        return { id, message: response.data.message };
-    }
-);
 
 export default songSlice.reducer;
