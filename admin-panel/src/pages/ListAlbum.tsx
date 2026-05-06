@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import Spiner from "../components/Spiner";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { deleteAlbum, fetchAlbum } from "../features/album/albumSlice";
+import AlbumRow from "../components/AlbumRow";
 
 const ListAlbum = () => {
   const dispatch = useAppDispatch();
@@ -39,23 +40,9 @@ const ListAlbum = () => {
           <b>Album colour</b>
           <b>Action</b>
         </div>
-        {data?.map((item, index) => {
+        {data?.map((item) => {
           return (
-            <div
-              key={index}
-              className="sm:grid hidden grid-cols-[0.5fr_1fr_2fr_1fr_0.5fr] items-center gap-2.5 border border-gray-300 text-sm mr-5 bg-gray-100 p-3"
-            >
-              <img className="w-12" src={item.image} alt="img" />
-              <p>{item.name}</p>
-              <p>{item.desc}</p>
-              <input type="color" value={item.bgColour} readOnly />
-              <p
-                className="cursor-pointer"
-                onClick={() => handleDelete(item._id)}
-              >
-                X
-              </p>
-            </div>
+           <AlbumRow item={item} onDelete={handleDelete} key={item._id}/>
           );
         })}
       </div>
