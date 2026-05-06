@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { deleteSong, fetchSongs } from "../features/song/songSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import SongRow from "../components/SongRow";
 
 const ListSong = () => {
   const dispatch = useAppDispatch();
@@ -39,24 +40,10 @@ const ListSong = () => {
           <b>Album</b>
           <b>Duration</b>
           <b>Action</b>
-        </div>
-        {data?.map((item, index) => {
+        </div> 
+        {data?.map((item) => {
           return (
-            <div
-              key={index}
-              className="sm:grid hidden grid-cols-[0.5fr_1fr_2fr_1fr_0.5fr] items-center gap-2.5 border border-gray-300 text-sm mr-5 bg-gray-100 p-3"
-            >
-              <img className="w-12" src={item.image} alt="img" />
-              <p>{item.name}</p>
-              <p>{item.album}</p>
-              <p>{item.duration}</p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleDelete(item._id)}
-              >
-                X
-              </p>
-            </div>
+            <SongRow key={item._id} item={item} onDelete={handleDelete}/>
           );
         })}
       </div>
