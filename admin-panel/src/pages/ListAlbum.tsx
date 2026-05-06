@@ -12,19 +12,21 @@ const ListAlbum = () => {
   useEffect(() => {
     dispatch(fetchAlbum())
   },[dispatch]);
+  
+  const handleDelete = async (id) => {
+  const result = await dispatch(deleteAlbum(id));
 
-  const handleDelete = (id) => {
-    dispatch(deleteAlbum(id));
+  if (deleteAlbum.fulfilled.match(result)) {
     toast.success("Album deleted");
-  };
-
-  if (error) {
-    return (
-      <div className="grid place-items-center min-h-[80vh]">
-        <p className="text-red-500">Error: {error}</p>
-      </div>
-    );
+  } else {
+    toast.error("Too many requests");
   }
+};
+  useEffect(() => {
+  if (error) {
+    toast.error(error);
+  }
+}, [error]);
 
   return loading ? (
     <Spiner />

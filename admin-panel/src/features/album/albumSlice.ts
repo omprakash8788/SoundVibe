@@ -12,11 +12,25 @@ export const fetchAlbum = createAsyncThunk(
     }
 );
 
+// export const deleteAlbum = createAsyncThunk(
+//     "album/deleteAlbum",
+//     async (id) => {
+//         const response = await axios.post(`${url}/api/album/remove`, { id });
+//         return { id, message: response.data.message };
+//     }
+// );
+
 export const deleteAlbum = createAsyncThunk(
     "album/deleteAlbum",
-    async (id) => {
-        const response = await axios.post(`${url}/api/album/remove`, { id });
-        return { id, message: response.data.message };
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${url}/api/album/remove`, { id });
+            return { id, message: response.data.message };
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Something went wrong"
+            );
+        }
     }
 );
 
@@ -48,6 +62,9 @@ const albumSlice = createSlice({
                 state.data = state.data.filter(
                     (album) => album._id !== action.payload.id
                 );
+            })
+            .addCase(deleteAlbum.rejected, (state, action) => {
+                state.error = action.payload;
             })
     },
 });
