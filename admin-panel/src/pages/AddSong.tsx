@@ -4,10 +4,11 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { url } from "../App";
 import Spiner from "../components/Spiner";
+import FormInput from "../components/FormInput";
 
 const AddSong = () => {
-  const [image, setImage] = useState(false);
-  const [song, setSong] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [song, setSong] = useState<File | null>(null);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [album, setAlbum] = useState("none");
@@ -25,14 +26,13 @@ const AddSong = () => {
       formData.append("audio", song);
       formData.append("album", album);
       const response = await axios.post(`${url}/api/song/add`, formData);
-      // console.log(response)
       if (response.data.success) {
         toast.success("Song Added");
         setName("");
         setAlbum("None");
         setDesc("");
-        setImage(false);
-        setSong(false);
+        setImage(null);
+        setSong(null);
       } else {
         toast.error("Something went wrong");
       }
@@ -104,32 +104,23 @@ const AddSong = () => {
           </label>
         </div>
       </div>
-      {/*  */}
-      <div className="flex flex-col gap-2.5">
-        <p>Song Name</p>
-        <input
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-          className="bg-transparent outline-green-600 border-2 border-gray-400 p-2 w-100"
-          type="text"
-          placeholder="Type here"
-          required
-        />
-      </div>
-
-      <div className="flex flex-col gap-2.5">
-        <p>Song Description</p>
-        <input
-          onChange={(e) => setDesc(e.target.value)}
-          value={desc}
-          className="bg-transparent outline-green-600 border-2 border-gray-400 p-2 w-100"
-          type="text"
-          placeholder="Type here"
-          required
-        />
-      </div>
-
-      <div className="flex flex-col gap-2.5">
+      <FormInput
+        label={"Song Name"}
+        name="name"
+        value={name}
+        type="text"
+        placeholder="Type here"
+        onChange={(e) => setName(e.target.value)}
+      />
+       <FormInput
+        label={"Song Description"}
+        name="desc"
+        value={desc}
+        type="text"
+        placeholder="Type here"
+        onChange={(e) => setDesc(e.target.value)}
+      />
+     <div className="flex flex-col gap-2.5">
         <p>Album</p>
         <select
           onChange={(e) => setAlbum(e.target.value)}
@@ -137,16 +128,13 @@ const AddSong = () => {
           className="bg-transparent outline-green-600 border-2 border-gray-400 p-2 w-37.5"
         >
           <option value="none">None</option>
-          {
-            albumData.map((item, index)=>(
-              <option key={index} value={item.name}>
-                {item.name}
-              </option>
-            ))
-          }
+          {albumData.map((item, index) => (
+            <option key={index} value={item.name}>
+              {item.name}
+            </option>
+          ))}
         </select>
       </div>
-
       <button
         type="submit"
         className="text-base mb-5 bg-black text-white py-2.5 px-14 cursor-pointer"
